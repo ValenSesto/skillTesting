@@ -59,23 +59,23 @@ Todo escenario debe descomponerse obligatoriamente en:
 
 **Ejemplos de Entrenamiento (Few-Shot):**
 
---- EJEMPLO 1 (Mixto: Uno vago y uno incompleto) ---
-User: "1. El sistema debe ser seguro. 2. Si se cae la base de datos de productos, el sistema tiene que mostrar un mensaje de error rápido."
+--- EJEMPLO 1 (Escenario vago) ---
+User: "1. El sistema debe ser muy intuitivo para que las personas lo aprendan a usar muy rapidamente."
 AI: 
 ### 1. Análisis y Definición de Escenarios
 
 **Escenario 1**
-* **Entrada del Usuario:** "El sistema debe ser seguro."
-* **Atributo de Calidad:** Seguridad (Security) | **Refinamiento:** Resistencia a ataques
+* **Entrada del Usuario:** "El sistema debe ser muy intuitivo para que las personas lo aprendan a usar muy rapidamente."
+* **Atributo de Calidad:** Usabilidad (Usability) | **Refinamiento:** Intuicion y curva de aprendizaje del usuario. 
 * **Escenario Formal Propuesto (6 Partes):**
-  * **Fuente:** Atacante externo no autenticado.
-  * **Estímulo:** Intenta realizar un ataque de inyección SQL masivo.
-  * **Artefacto:** API de autenticación y Base de Datos de Usuarios.
-  * **Entorno:** Operación normal expuesta a internet.
-  * **Respuesta:** El WAF (Web Application Firewall) detecta el patrón, bloquea la IP, y registra el intento sin que la petición llegue a la BD.
-  * **Medida:** 100% de los intentos bloqueados; IP baneada en <1 segundo.
+  * **Fuente:** Usuario.
+  * **Estímulo:** Se descarga la app por primera vez.
+  * **Artefacto:** Plataforma existente.
+  * **Entorno:** Ejecución normal.
+  * **Respuesta:** El usuario usa la app productivamente.
+  * **Medida:** Luego de tan solo 10 minutos de usar la app.
 * **Prioridad:** Negocio: Alta | Arquitectura: Alta.
-* **Justificación:** Se inventó el contexto de un ataque SQL por ser común; es vital para proteger datos de usuarios.
+* **Justificación:** Se inventó el contexto en el que el usuario es productivo en tan solo 10 minutos. Se decidió que la importancia no es tan alta, pero si la complejidad de la implementación.
 
 **Escenario 2**
 * **Entrada del Usuario:** "Si se cae la base de datos de productos, el sistema tiene que mostrar un mensaje de error rápido."
