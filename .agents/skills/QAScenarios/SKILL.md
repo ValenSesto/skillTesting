@@ -74,37 +74,58 @@ AI:
   * **Entorno:** Ejecución normal.
   * **Respuesta:** El usuario usa la app productivamente.
   * **Medida:** Luego de tan solo 10 minutos de usar la app.
-* **Prioridad:** Negocio: Alta | Arquitectura: Alta.
+* **Prioridad:** Negocio: Media | Arquitectura: Alta.
 * **Justificación:** Se inventó el contexto en el que el usuario es productivo en tan solo 10 minutos. Se decidió que la importancia no es tan alta, pero si la complejidad de la implementación.
-
-**Escenario 2**
-* **Entrada del Usuario:** "Si se cae la base de datos de productos, el sistema tiene que mostrar un mensaje de error rápido."
-* **Atributo de Calidad:** Usabilidad / Confiabilidad | **Refinamiento:** Manejo de Errores
-* **Diagnóstico de Completitud:**
-  * Fuente: Ausente (No dice por qué se cae).
-  * Estímulo: Presente (Caída de la base de datos).
-  * Artefacto: Presente (Base de datos de productos).
-  * Entorno: Ausente (No define bajo qué condiciones).
-  * Respuesta: Ambiguo ("mostrar mensaje de error" falta definir a quién y cómo actúa la arquitectura interna).
-  * Medida: Ambiguo ("rápido" no es cuantificable).
-* **Escenario Formal Propuesto (6 Partes):**
-  * **Fuente:** Falla interna de red.
-  * **Estímulo:** Se pierde la conexión con la base de datos del catálogo.
-  * **Artefacto:** Base de datos de productos y capa de Interfaz de Usuario (UI).
-  * **Entorno:** Usuario navegando en horario de tráfico regular.
-  * **Respuesta:** El microservicio de catálogo agota su timeout, implementa el patrón Circuit Breaker y devuelve una respuesta de contingencia a la UI para que renderice una pantalla amigable de "Estamos en mantenimiento".
-  * **Medida:** El usuario ve el mensaje en menos de 500ms tras la falla original, sin que la app se congele.
-* **Prioridad:** Negocio: Media | Arquitectura: Media.
-* **Justificación:** Faltaban parámetros clave como el origen y la medida; asigné 500ms para definir "rápido" y sugerí el patrón Circuit Breaker.
 
 ---
 
 ### 2. Árbol de Utilidad (Utility Tree)
 
 * **Utilidad**
-  * **Seguridad**
-    * **Resistencia a ataques**
-      * Ataque SQL bloqueado por WAF antes de llegar a la BD en <1s. -> **(Alta, Alta)**
   * **Usabilidad**
-    * **Manejo de Errores**
-      * Ante falla de conexión a BD, devolver mensaje amigable usando Circuit Breaker en <500ms. -> **(Media, Media)**
+    * **Intuicion y curva de aprendizaje del usuario.**
+      * Usuario usa productivamente la app luego de 10m de conocerla. -> **(Media, Alta)**
+      
+--- EJEMPLO 2 (Mixto: dos escenarios mezclados) ---
+
+User: "1. Si el servidor falla, debe dar aviso y continuar operando sin que se note. 2. Un desarrollador debe poder cambiar la UI en desarrollo y testear el cambio sin perjudicar el resto del sistema."
+AI: 
+### 1. Análisis y Definición de Escenarios
+
+**Escenario 1**
+* **Entrada del Usuario:** "Si el servidor falla, debe dar aviso y continuar operando sin que se note."
+* **Atributo de Calidad:** Disponibilidad (Availability) | **Refinamiento:** Manejo de falla sin downtime
+* **Escenario Formal Propuesto (6 Partes):**
+  * **Fuente:** Servidor.
+  * **Estímulo:** Falla del servidor.
+  * **Artefacto:** Servidor.
+  * **Entorno:** Operaciones normales de ejecución.
+  * **Respuesta:** El sistema le informa al operador del servidor y continua operando.
+  * **Medida:** Servidor sigue operando sin tiempo de inactividad.
+* **Prioridad:** Negocio: Alta | Arquitectura: Alta.
+* **Justificación:** Faltó confirmar a quien se le da aviso, y se interpretó la continuación de la operación "sin que se note". Se inventó que la prioridad es alta para ambas clasificaciones.
+
+**Escenario 2**
+* **Entrada del Usuario:** "Un desarrollador debe poder cambiar la UI en desarrollo y testear el cambio sin perjudicar el resto del sistema."
+* **Atributo de Calidad:** Modificabilidad (Modifiability) | **Refinamiento:** Modificación en desarrollo e independencia de componentes.
+* **Escenario Formal Propuesto (6 Partes):**
+  * **Fuente:** Desarrollador.
+  * **Estímulo:** Quiere modificar la UI.
+  * **Artefacto:** UI.
+  * **Entorno:** Tiempo de desarrollo.
+  * **Respuesta:** El cambio es aplicado correctamente.
+  * **Medida:** Menos de 3 horas para hacer y testear el cambio. Sin efectos laterales. 
+* **Prioridad:** Negocio: Media | Arquitectura: Baja.
+* **Justificación:** Se inventó la medida de la respuesta. Se Establecíó la importancia para el sistema como media, y facil de implementar.
+
+---
+
+### 2. Árbol de Utilidad (Utility Tree)
+
+* **Utilidad**
+  * **Disponibilidad**
+    * **Manejo de falla sin downtime**
+      * Falla del servidor reportada y corregida en el momento. -> **(Alta, Alta)**
+  * **Modificabilidad**
+    * **Modificación en desarrollo e independencia de componentes.**
+      * Modificación del desarrollador en tiempo de diseño del sistema, sin perjudicar otros componentes. -> **(Media, Baja)**
