@@ -1,0 +1,1 @@
+A disgruntled employee at a remote location attempts to improperly modify the pay rate table during normal operations. The unauthorized access is detected, the system maintains an audit trail, and the correct data is restored within one day.
