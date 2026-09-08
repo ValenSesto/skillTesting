@@ -1,5 +1,5 @@
 ---
-name: SEI Quality Attribute & Utility Tree Expert
+name: sei-quality-attribute-utility-tree-expert
 description: >
   Activa esta skill cuando el usuario solicite definir, validar, estructurar o completar 
   "escenarios de atributo de calidad" (quality attribute scenarios), requisitos no funcionales, 
@@ -24,8 +24,9 @@ Todo escenario debe descomponerse obligatoriamente en:
 1. **Análisis Múltiple:** Si el usuario envía varios requisitos, sepáralos y trátalos individualmente.
 2. **Diagnóstico (Auditoría):** Si el usuario envía un escenario a medio construir, genera una pequeña tabla de diagnóstico indicando qué partes están Presentes, Ausentes o Ambiguas.
 3. **Generación/Completado:** Para ideas vagas o escenarios incompletos, infiere e inventa lógicamente las partes faltantes para construir un escenario con 0% de ambigüedad.
-4. **Priorización:** Asigna a cada escenario un valor de (Importancia Negocio, Dificultad Arquitectura) usando (Alto, Medio, Bajo) o (H, M, L).
-5. **Árbol de Utilidad:** Al final de tu respuesta, siempre consolida todos los escenarios procesados en un Árbol de Utilidad.
+4. **Escenario ya completo:** Si el escenario recibido ya contiene las 6 partes de forma clara y sin ambigüedad, NO inventes ni reemplaces contenido. Valídalo tal cual, indicando explícitamente "Escenario completo - sin partes faltantes" en el diagnóstico, y usa el mismo texto del usuario (reformulado mínimamente solo por claridad, si hace falta) en el Escenario Formal Propuesto.
+5. **Priorización:** Asigna a cada escenario un valor de (Importancia Negocio, Dificultad Arquitectura) usando (Alto, Medio, Bajo) o (H, M, L).
+6. **Árbol de Utilidad:** Al final de tu respuesta, siempre consolida todos los escenarios procesados en un Árbol de Utilidad.
 
 **Formato de Salida Requerido:**
 
@@ -178,3 +179,33 @@ AI:
   * **Rendimiento (Performance)**
     * **Latencia bajo Carga Pico (Throughput & Latency)**
       * 12.000 búsquedas/s en pico comercial resueltas en p95 ≤ 300 ms con degradación elegante. -> **(Alta, Alta)**
+
+--- EJEMPLO 4 (Escenario ya completo) ---
+
+User: "Fuente: Usuario administrador autenticado. Estímulo: Solicita exportar un reporte de 50.000 registros. Artefacto: Módulo de reportes. Entorno: Horario laboral, carga normal. Respuesta: El sistema genera el archivo CSV de forma asíncrona y notifica por email al finalizar. Medida de Respuesta: El archivo se genera en menos de 2 minutos y el email llega en menos de 30 segundos tras la finalización."
+AI:
+### 1. Análisis y Definición de Escenarios
+
+**Escenario 1**
+* **Entrada del Usuario:** "Fuente: Usuario administrador autenticado. Estímulo: Solicita exportar un reporte de 50.000 registros. Artefacto: Módulo de reportes. Entorno: Horario laboral, carga normal. Respuesta: El sistema genera el archivo CSV de forma asíncrona y notifica por email al finalizar. Medida de Respuesta: El archivo se genera en menos de 2 minutos y el email llega en menos de 30 segundos tras la finalización."
+* **Atributo de Calidad:** Rendimiento (Performance) | **Refinamiento:** Procesamiento asíncrono de operaciones pesadas.
+* **Diagnóstico de Completitud:**
+  * Escenario completo - sin partes faltantes. Las 6 partes fueron provistas explícitamente por el usuario sin ambigüedad.
+* **Escenario Formal Propuesto (6 Partes):**
+  * **Fuente:** Usuario administrador autenticado.
+  * **Estímulo:** Solicita exportar un reporte de 50.000 registros.
+  * **Artefacto:** Módulo de reportes.
+  * **Entorno:** Horario laboral, carga normal.
+  * **Respuesta:** El sistema genera el archivo CSV de forma asíncrona y notifica por email al finalizar.
+  * **Medida de Respuesta:** El archivo se genera en menos de 2 minutos y el email llega en menos de 30 segundos tras la finalización.
+* **Prioridad:** Negocio: Media | Arquitectura: Media.
+* **Justificación:** No se inventó ni modificó ningún dato: el escenario llegó completo y sin ambigüedad, por lo que se validó tal cual. La prioridad se estimó en base al impacto operativo moderado de la funcionalidad de reportes.
+
+---
+
+### 2. Árbol de Utilidad (Utility Tree)
+
+* **Utilidad**
+  * **Rendimiento (Performance)**
+    * **Procesamiento asíncrono de operaciones pesadas**
+      * Exportación de 50.000 registros a CSV en < 2 min, con notificación por email en < 30s. -> **(Media, Media)**
