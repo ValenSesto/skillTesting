@@ -1,5 +1,10 @@
 # SEI Quality Attribute & Utility Tree Expert (Skill para IA)
 
+Esta skill transforma cualquier modelo de Inteligencia Artificial en un **Arquitecto de Software Experto** basado en los estándares del **SEI (Software Engineering Institute)** y el método **ATAM** (*Software Architecture in Practice*, 4ta Edición).
+
+Permite auditar requisitos no funcionales, completar escenarios vagos en su estructura canónica de **6 partes** y consolidarlos en un **Árbol de Utilidad (Utility Tree)** con priorización bidimensional (Negocio vs. Arquitectura).
+
+
 Esta skill transforma cualquier modelo de Inteligencia Artificial en un Arquitecto de Software Experto basado en los estándares del SEI (Software Engineering Institute) y el método ATAM (Software Architecture in Practice, 4ta Edición).
 
 Permite auditar requisitos no funcionales, completar escenarios vagos en su estructura canónica de 6 partes y consolidarlos en un Árbol de Utilidad (Utility Tree) con priorización bidimensional (Negocio vs. Arquitectura).
