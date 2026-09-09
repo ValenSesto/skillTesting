@@ -4,36 +4,29 @@ Esta skill transforma cualquier modelo de Inteligencia Artificial en un **Arquit
 
 Permite auditar requisitos no funcionales, completar escenarios vagos en su estructura canónica de **6 partes** y consolidarlos en un **Árbol de Utilidad (Utility Tree)** con priorización bidimensional (Negocio vs. Arquitectura).
 
----
 
-## 📁 Ubicación del Archivo de la Skill
+## Ubicación del archivo de la skill:
 
-El archivo principal con la definición, reglas de negocio y ejemplos *few-shot* se encuentra en:
 ```text
-./.agents/skills/QAScenarios/SKILL.md
+.agents/skills/QAScenarios/SKILL.md
 ```
 
 ---
 
-## 🚀 Cómo ejecutar la Skill con cualquier IA (Guía paso a paso)
+## Ejecución de la skill
 
-Dependiendo de la herramienta o entorno de Inteligencia Artificial que utilices, ejecuta los siguientes comandos en tu terminal desde la raíz de este repositorio:
+### Opción 1: Google Antigravity (`agy` CLI o Antigravity IDE)
 
----
+Google Antigravity lee de forma nativa los archivos `SKILL.md` dentro de la ruta `.agents/skills/`.
 
-### Opción 1: Con Google Antigravity (`agy` CLI o Antigravity IDE)
-
-Google Antigravity lee de forma nativa los archivos `SKILL.md` dentro de la ruta `./.agents/skills/`.
-
-#### A. A nivel de Proyecto (Workspace local)
-Si ejecutas `agy` o abres esta carpeta en el IDE, la skill ya está disponible automáticamente por convención de workspace:
+#### A. Workspace local
+Si ejecutas `agy` o abres esta carpeta en el IDE, la skill ya está disponible automáticamente por convención del workspace:
 ```bash
 # Iniciar Antigravity dentro del directorio del proyecto
 agy
 ```
 
-#### B. A nivel Global (disponible en cualquier proyecto o carpeta de tu máquina)
-Para que la skill esté activa en cualquier conversación de Antigravity sin importar en qué carpeta estés parado:
+#### B. Global (disponible en cualquier proyecto o carpeta de tu máquina)
 ```bash
 # Crear el directorio de skills globales si aún no existe
 mkdir -p ~/.gemini/config/skills
@@ -44,41 +37,33 @@ cp -r "./.agents/skills/QAScenarios" ~/.gemini/config/skills/
 
 ---
 
-### Opción 2: Con Agentes y Editores de Código (Claude Code, Cursor, Aider)
+### Opción 2: Otros agentes (Claude Code, Cursor)
 
-Si utilizas otros asistentes de desarrollo basados en terminal o editor, puedes vincular o copiar la skill a los puntos de configuración que cada herramienta espera:
-
-#### Para Claude Code:
+#### Claude Code:
 ```bash
 # Configura las instrucciones de contexto para Claude Code
 cp ./.agents/skills/QAScenarios/SKILL.md ./CLAUDE.md
 ```
 
-#### Para Cursor IDE:
+#### Cursor IDE:
 ```bash
 # Configura las instrucciones como reglas globales del proyecto
 cp ./.agents/skills/QAScenarios/SKILL.md ./.cursorrules
 ```
 
----
-
-### Opción 3: Con Modelos Locales en Terminal (Ollama)
-
-Si ejecutas modelos de forma local con **Ollama**, puedes pasarle el archivo directamente como prompt de sistema:
+### Opción 3: Modelos Locales en Terminal (Ollama)
 
 ```bash
 # Ejecutar con Llama 3 (o el modelo que tengas instalado)
-ollama run llama3 "$(cat ./.agents/skills/QAScenarios/SKILL.md)"
+ollama run llama3 "$(cat .agents/skills/QAScenarios/SKILL.md)"
 ```
 
 ---
 
-### Opción 4: Con cualquier IA Web (ChatGPT, Claude.ai, Gemini, DeepSeek, Copilot)
-
-Si vas a usar una interfaz web en el navegador, no necesitas la terminal. Puedes activarla siguiendo estos sencillos pasos con atajos de teclado:
+### Opción 4: IA Web (ChatGPT, Claude.ai, Gemini, DeepSeek, Copilot)
 
 1. **Abrir el archivo:**
-   Abre el archivo [SKILL.md](./.agents/skills/QAScenarios/SKILL.md) con tu editor de texto preferido (VS Code, Bloc de notas, o directamente desde GitHub/GitLab).
+   Abre el archivo [SKILL.md](.agents/skills/QAScenarios/SKILL.md) con tu editor de texto preferido (VS Code, Bloc de notas, o directamente desde GitHub/GitLab).
 
 2. **Copiar todo el contenido:**
    * Presiona <kbd>Ctrl</kbd> + <kbd>A</kbd> (o <kbd>Cmd</kbd> + <kbd>A</kbd> en Mac) para seleccionar todo el texto.  
@@ -95,7 +80,7 @@ Si vas a usar una interfaz web en el navegador, no necesitas la terminal. Puedes
 
 ---
 
-## 📋 Estructura Canónica del SEI aplicada por la Skill
+## Estructura Canónica del SEI aplicada por la skill
 
 La IA descompondrá cada requisito en las 6 partes obligatorias:
 1. **Fuente del estímulo (*Source*):** Quién o qué genera el evento (usuario, atacante, sensor, falla interna).
@@ -107,7 +92,7 @@ La IA descompondrá cada requisito en las 6 partes obligatorias:
 
 ---
 
-## 💡 Flujo de Salida de la IA
+## Flujo de Salida de la IA
 
 Ante cualquier entrada, la IA entregará:
 1. **Diagnóstico de Completitud:** Tabla indicando qué partes están *Presentes*, *Ausentes* o *Ambiguas*.

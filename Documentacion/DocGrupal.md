@@ -2,9 +2,9 @@
 
 ## 1. Elección de la IA y definición de la base
 
-Decidimos implementar **Gemini** como nuestra IA para armar y probar las skills debido a ya estar familiarizados con la misma al usarla desde antes. 
+Decidimos implementar **Gemini** como nuestra IA para armar y probar las skills debido a ya estar familiarizados con la misma.
 
-* Comenzamos por pedirle a la propia inteligencia artificial que arme la skill e ir comparando con el libro y ejercicios hechos previamente para ir encontrando una base.
+* Comenzamos por pedirle a la propia IA que arme la skill para luego ir comparando con el libro y los ejercicios hechos previamente y de esta manera consolidar una base.
 * Al utilizar la propia IA como referente, pudimos ir acomodando cada una de las partes para que la IA las identifique por separado:
   * **Fuente**
   * **Estímulo**
