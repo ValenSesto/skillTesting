@@ -1,0 +1,2 @@
+resuelve correctamente los atributos de calidad a partir de los enunciados y de nuevo proporciona una salida didactica, mostrando hasta que punto usa el enunciado y donde empieza a completar con ideas 
+propias, de la misma manera arma de manera correcta el arbol, justificando las prioridades y dificultades arquitectonicas asociadas 

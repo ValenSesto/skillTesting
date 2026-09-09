@@ -1,0 +1,3 @@
+identifica de manera correcta el error y lo corrige, analisando el enunciado y marcando las ambiguedades o datos faltantes en las 6 partes del escenario para luego dar una respuesta concreta
+ademas da una alternativa de interpretacion para armar el escenario en base al error del usuario, mostrando asi la alternativa mas correcta para resolver el ejercicio y la alternativa cercana al input del usuario
+terminando con un arbol de utilidad correcto
