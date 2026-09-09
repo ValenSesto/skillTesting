@@ -1,0 +1,112 @@
+  A continuación, se presenta la auditoría diagnóstica según el estándar SEI / ATAM, su formalización en las 6 partes canónicas y su integración en
+  el Árbol de Utilidad.
+  ──────
+  ### 1. Análisis y Definición de Escenarios
+
+  • Entrada del Usuario: "Durante el Black Friday, el motor de búsqueda de productos debe responder rápido a las consultas para que los usuarios no
+  abandonen la web."
+  • Atributo de Calidad: Rendimiento (Performance) | Refinamiento: Latencia y Rendimiento bajo Carga Pico (Throughput & Latency)
+  • Diagnóstico de Completitud:
+      • Fuente: Ambiguo - Se infiere que son usuarios de la web/app, pero no se especifica el perfil de clientes concurrentes ni el origen de las
+      peticiones.
+      • Estímulo: Ambiguo - "Consultas" no define tasa de llegada (throughput), volumen por segundo ni complejidad de los filtros.
+      • Artefacto: Presente - Motor de búsqueda de productos y catálogo.
+      • Entorno: Presente / Parcial - "Durante el Black Friday" indica modo pico de tráfico, pero no cuantifica el nivel de sobrecarga operativa.
+      • Respuesta: Ambiguo - "Responder" no especifica la conducta arquitectónica (estrategia de caching, paginación, degradación de servicio).
+      • Medida de Respuesta: Ambiguo - Expresiones como "rápido" y "para que no abandonen" son subjetivas e imposibles de auditar mediante pruebas
+      de carga o SLA.
+• Escenario Formal Propuesto (6 Partes):
+      • Fuente: Clientes web y móviles concurrentes (tráfico externo no autenticado y autenticado).
+      • Estímulo: Ráfaga estocástica de 12.000 peticiones de búsqueda/segundo con filtros combinados (categoría, rango de precios y stock).
+      • Artefacto: Servicio de Búsqueda y Catálogo de Productos (Search Engine & distributed cache).
+      • Entorno: Operación normal bajo carga pico de evento comercial (300% de la carga media sostenida).
+      • Respuesta: El sistema resuelve las búsquedas consultando la capa de caché distribuida y el clúster de búsqueda, aplicando degradación
+      elegante (desactivando sugerencias predictivas secundarias) si el clúster supera el 85% de CPU.
+      • Medida de Respuesta: Latencia en percentil 95 (p95) ≤300  ms, tiempo total de renderizado en cliente ≤1  s, y tasa de error (HTTP 5xx) <0.
+      01%.
+  • Prioridad: Negocio: Alta | Arquitectura: Alta.
+  • Justificación: Para el negocio, la pérdida de velocidad en el buscador en una fecha comercial crítica impacta directamente en la conversión y
+  facturación. A nivel arquitectónico, sostener 12.000 req/s con búsquedas multicriterio exige un diseño robusto de edge caching, réplicas de
+  lectura desacopladas y políticas de autoescalado elástico.
+  ──────
+  ### 2. Árbol de Utilidad (Utility Tree)
+
+  • Utilidad
+      • Rendimiento (Performance)
+      • Latencia bajo Carga Pico
+              • 12.000 búsquedas/s en pico comercial resueltas en p95 ≤ 300  ms con degradación elegante y errores <0.01%. -> (Alta, Alta)
+
+----------------------------------------------------------------------------------------------------------------
+
+### 1. Análisis y Definición de Escenarios
+
+  Escenario 1
+
+  • Entrada del Usuario: "500 usuarios inician 2000 solicitudes en un intervalo de 30 segundos, bajo operaciones normales el sistema procesa todas
+  las solicitudes con latencia promedio de 2 segundos"
+  • Atributo de Calidad: Rendimiento (Performance) | Refinamiento: Capacidad de respuesta y concurrencia (Throughput & Latency)
+  • Diagnóstico de Completitud:
+      • Fuente: Presente - 500 usuarios concurrentes.
+      • Estímulo: Presente - Llegada de 2000 solicitudes en un lapso de 30 segundos (~66.7 transacciones por segundo).
+      • Artefacto: Ambiguo - Se refiere genéricamente a "el sistema"; no especifica componentes críticos (API Gateway, microservicios, capa de
+      persistencia).
+      • Entorno: Presente - "Bajo operaciones normales" (tiempo de ejecución estándar).
+      • Respuesta: Presente - Procesamiento de todas las solicitudes sin degradación del servicio.
+      • Medida de Respuesta: Presente (con observaciones) - Especifica 100% de solicitudes procesadas y latencia promedio de 2 segundos. Conforme a
+      las mejores prácticas del SEI, se recomienda complementar el promedio con una métrica de percentil (ej. p95) para evitar distorsiones por
+      valores atípicos (outliers).• Escenario Formal Propuesto (6 Partes):
+      • Fuente: 500 usuarios concurrentes externos.
+      • Estímulo: Ráfaga sostenida de 2000 solicitudes transaccionales distribuidas en una ventana de 30 segundos (~66.7 req/s).
+      • Artefacto: API Gateway y servicios backend del sistema.
+      • Entorno: Operación normal en tiempo de ejecución bajo condiciones nominales de infraestructura.
+      • Respuesta: El sistema encola, gestiona la concurrencia y procesa la totalidad de las transacciones sin pérdida de datos ni caídas por
+      saturación.
+      • Medida de Respuesta: Latencia media ≤2 segundos, latencia en percentil 95 (p95) ≤3.5 segundos, y una tasa de procesamiento del 100% (0% de
+      errores HTTP 5xx o solicitudes descartadas).
+  • Prioridad: Negocio: Alta | Arquitectura: Media.
+  • Justificación: Cumplir con los niveles de servicio acordados (SLA) de latencia y disponibilidad ante concurrencia es vital para la experiencia
+  del usuario y los ingresos del negocio (Negocio: Alta). Desde la perspectiva arquitectónica, procesar una tasa de ~67 req/s con respuesta promedio
+  de 2s demanda una adecuada gestión de hilos/conexiones, dimensionamiento de recursos y balanceo básico de carga, pero no exige soluciones de
+  altísima complejidad distributiva (Arquitectura: Media).
+  ──────
+  ### 2. Árbol de Utilidad (Utility Tree)
+
+  • Utilidad
+      • Rendimiento
+          • Capacidad de respuesta y concurrencia (Throughput & Latency)
+              • 2000 solicitudes en 30s por 500 usuarios procesadas con latencia promedio $\le 2$s ($p95 \le 3.5$s) y 0% de errores. -> (Alta, Media)
+----------------------------------------------------------------------------------------------------------------
+
+1* Análisis y Definición de Escenarios
+  Escenario 1
+
+  • Entrada del Usuario: "A developer wishes to change the user interface. this change will be made to the code at desing time, it will take less than three hours to make and test change, and no side effects will occur."
+  • Atributo de Calidad: Modificabilidad (Modifiability) | Refinamiento: Independencia de componentes y mantenibilidad de la UI (UI Independence & Maintainability)
+  • Diagnóstico de Completitud:
+      • Fuente: Presente - Desarrollador (Developer).
+      • Estímulo: Presente - Requerimiento de modificar la interfaz de usuario (Wishes to change the UI).
+      • Artefacto: Presente - Código de la interfaz de usuario (UI code).
+      • Entorno: Presente - Tiempo de diseño / desarrollo (Design time).
+      • Respuesta: Presente - El cambio es implementado en el código, testeado y aislado de otros módulos (Make and test change, no side effects).
+      • Medida de Respuesta: Presente - Esfuerzo menor a 3 horas para codificar y probar, y 0 efectos colaterales (side effects).
+• Escenario Formal Propuesto (6 Partes):
+      • Fuente: Desarrollador de frontend / UI.
+      • Estímulo: Solicitud de cambio o rediseño sobre la interfaz de usuario.
+      • Artefacto: Código fuente de la capa de presentación (UI).
+      • Entorno: Tiempo de diseño y desarrollo (Design time / entorno local y CI).
+      • Respuesta: La modificación se implementa en el módulo de UI correspondiente, se ejecutan las pruebas automatizadas (unitarias y de
+      componentes) y se valida la ausencia de impacto en el resto del sistema.
+      • Medida de Respuesta: Tiempo total de desarrollo y pruebas inferior a 3 horas-persona, con 0 dependencias no deseadas afectadas y 0 efectos
+      colaterales o regresiones en otros componentes del sistema (100% de la suite de regresión aprobada).
+  • Prioridad: Negocio: Media | Arquitectura: Baja.
+  • Justificación: Este es un escenario canónico de modificabilidad según la literatura del SEI (Bass et al., Software Architecture in Practice).
+  Desde la perspectiva del negocio, una UI flexible agiliza iteraciones de producto (Prioridad Media). A nivel de arquitectura, lograr este nivel de
+  aislamiento es de complejidad Baja si se respetan patrones consolidados de separación de responsabilidades (ej. desacoplamiento frontend-backend,
+  Clean Architecture o patrones de componentes modulares).
+  ──────
+  ### 2. Árbol de Utilidad (Utility Tree)
+
+  • Utilidad
+      • Modificabilidad
+      • Independencia y mantenibilidad de la UI (UI Independence & Maintainability)
+              • Modificación y testeo de la UI en tiempo de diseño en ❤️ horas sin efectos colaterales en el sistema. -> (Media, Baja)
